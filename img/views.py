@@ -13,13 +13,13 @@ def new(request):
     Returns mirror image from client.
     """
     if request.method == 'POST':
-        form = ImageForm(request.POST or None, request.FILES or None)
+        form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            image = Image.open(form.image)
+            image = Image.open(request.FILES['image'])
             image = ImageOps.mirror(image)
-            form.image = image
-            form.save()
-            return redirect('img:detail', slug=form.id)
+            form_image = ImageClient(image=image)
+            form_image.save()
+            return redirect('img:detail', slug=form_image.slug)
     else:
         form = ImageForm()
     return render(request, 'img/new_egami.html', {'form':form})
