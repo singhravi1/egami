@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'img/base.html' %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <p>Pour nettoyer votre image <br>
+        <a href="{% url 'img:new' %}" class="btn btn-default"> Cliquez ici</a></p>
+    </div>
+    <div class="col-md-4"></div>
+
+
+
+</div>
+
+{% endblock %}

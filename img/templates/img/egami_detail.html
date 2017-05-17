@@ -1,10 +1,19 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends 'img/base.html' %}
+{% load static %}
+{% load staticfiles %}
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+        <p> Telechargez votre image ici</p> <br>
+        <img src="{% static image.image %}" class ='img-responsive'>
+    </div>
+    <div class="col-md-4"></div>
+
+
+
+</div>
+
+{% endblock %}

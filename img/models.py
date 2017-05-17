@@ -1,15 +1,27 @@
 from django.db import models
+from django.db.models.signals import pre_save
+from django.utils.text import slugify
 
-# Create your models here.
 
-class Image_client(models.Model):
-    """
-    Ce modele contient un seul element principal: Image.
-    Les deux autres sont automatiquement remplis par Pillow
-    """
-    image = models.ImageField(null=False, blank=False, height_field='height_field', width_field='width_field')
-    height_field = models.IntegerField(default=0)
-    width_field = models.IntegerField(default=0)
+class ImageClient(models.Model):
+    
+    slug = models.SlugField(unique=True)
+    image = models.FileField(null=False, blank=False)
 
-    def __str__(self):
-        return self.image
+# better urls
+def create_slug(instance, new_slug=None):
+    slug = slugify('egami')
+    if new_slug is not None:
+        slug = new_slug
+    qs = ImageClient.objects.filter(slug=slug).order_by('-id')
+    exists = qs.exists()
+    if exists:
+        new_slug = "%s-%s" %(slug, qs.first().id)
+        return create_slug(instance, new_slug=new_slug)
+    return slug
+
+def pre_save_post_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = create_slug(instance)
+
+pre_save.connect(pre_save_post_receiver, sender=ImageClient)
