@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import ImageForm
 from .models import ImageClient
 from PIL import Image, ImageOps
-import stripe
 
 # Create your views here.
 def index(request):
@@ -16,11 +15,9 @@ def new(request):
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             image = Image.open(form.cleaned_data['image'])
-            image = ImageOps.mirror(image)
-            image = image.save(request.FILES['image'], 'jpeg')
-            form_image = ImageClient(image=image)
-            form_image.save()
-            return redirect('img:detail', pk=form_image.id)
+            form.image = ImageOps.mirror(image)
+            form.save()
+            return redirect('img:index')
     else:
         form = ImageForm()
     return render(request, 'img/new_egami.html', {'form':form})
