@@ -15,16 +15,17 @@ def new(request):
     if request.method == 'POST':
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
-            image = Image.open(request.FILES['image'])
+            image = Image.open(form.cleaned_data['image'])
             image = ImageOps.mirror(image)
+            image = image.save(request.FILES['image'], 'jpeg')
             form_image = ImageClient(image=image)
             form_image.save()
-            return redirect('img:detail', slug=form_image.slug)
+            return redirect('img:detail', pk=form_image.id)
     else:
         form = ImageForm()
     return render(request, 'img/new_egami.html', {'form':form})
 
 
-def detail(request, slug=None):
-    image = get_object_or_404(ImageClient, slug=slug)
+def detail(request, pk):
+    image = get_object_or_404(ImageClient, pk=pk)
     return render(request, 'img/egami_detail.html', {'image':image})
