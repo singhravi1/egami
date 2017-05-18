@@ -7,8 +7,8 @@
 
     <div class="col-md-4"></div>
     <div class="col-md-4">
-        <p> Telechargez votre image ici</p> <br>
-        <img src="{% static image.image %}" class ='img-responsive'>
+        <p> Telechargez votre image:</p> <br>
+        <img src="{{ image.image.url }}" class ='img-responsive'>
     </div>
     <div class="col-md-4"></div>
 
