@@ -16,9 +16,9 @@ def new(request):
         form = ImageForm(request.POST, request.FILES)
         if form.is_valid():
             image = Image.open(form.cleaned_data['image'])
-            image = ImageOps.mirror(image)
-            image = image.save(request.FILES['image'], 'jpeg')
-            form_image = ImageClient(image=image)
+            img = ImageOps.mirror(image)
+            #image = image.save(request.FILES['image'], 'jpeg')
+            form_image = ImageClient(image=img)
             form_image.save()
             return redirect('img:detail', pk=form_image.id)
     else:
